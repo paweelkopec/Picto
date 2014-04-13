@@ -1,6 +1,7 @@
 
 package pictodisplayer.db;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -24,6 +25,28 @@ public class Picto{
     
     public static String db = "jdbc:derby:db_picto";
 
+    public Picto(Integer id){
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Connection conn = DriverManager.getConnection(Pictodb.getName());
+            Statement st = conn.createStatement();
+            ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE id = "+id+"");
+            while (rec.next()) {
+                  this.id  = rec.getInt("id");
+                  this.name = rec.getString("name");
+                  this.fileName = rec.getString("file_name");
+                  this.sort = rec.getInt("sort");
+                  this.stats = rec.getInt("stats");
+                  break;
+            }
+            st.close();
+            
+        } catch (Exception e) {
+            
+            System.out.println("Error - " + e.toString());
+        } 
+        System.out.println(this.id);
+    }
     
     public void loadFromName (String pageName){
         try {
@@ -49,10 +72,12 @@ public class Picto{
     }    
     public void delete (){
         try {
+            File file = new File("C:\\PictoDisplayer\\"+this.fileName);
+            file.delete();
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
-            st.executeUpdate("DELETE FROM pages WHERE id ="+this.id);
+            st.executeUpdate("DELETE FROM pictos WHERE id ="+this.id);
             st.close();
         } catch (Exception e) {
             System.out.println("Error - " + e);
@@ -83,7 +108,7 @@ public class Picto{
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
 
-            st.executeUpdate("UPDATE pages  SET "
+            st.executeUpdate("UPDATE pictos  SET "
                       + "name='"+this.name+"', sort="+this.sort+", stats="+this.stats+", date=CURRENT_DATE WHERE id="+this.id);
             
             st.close();

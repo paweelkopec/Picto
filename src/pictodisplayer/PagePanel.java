@@ -40,7 +40,7 @@ public class PagePanel extends javax.swing.JPanel {
     private Integer categoryID;
     private Page page;
     private static Index index;
-    private Integer selectedImage;
+    private Integer currentImageId;
     
     JLabel display;
     ImagePanel         imagePane;
@@ -85,6 +85,11 @@ public class PagePanel extends javax.swing.JPanel {
         fileChooser.setFileFilter(new PictoFilter());
 
         menuDelete.setText("Usuń");
+        menuDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                menuDeleteMousePressed(evt);
+            }
+        });
         menuDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menuDeleteActionPerformed(evt);
@@ -219,22 +224,43 @@ public class PagePanel extends javax.swing.JPanel {
             System.out.println("File access cancelled by user.");
         }
     }//GEN-LAST:event_addPictoActionPerformed
-
+    private void labelMousePressed(java.awt.event.MouseEvent evt){
+        System.out.println("labelMousePressed");
+        JLabel label = (JLabel) evt.getComponent();
+        this.currentImageId = Integer.parseInt(label.getName());
+    }
     private void menuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeleteActionPerformed
 
-//evt.paramString();
-//        evt.
-        javax.swing.JMenuItem item = (javax.swing.JMenuItem) evt.getSource();
-        javax.swing.JPopupMenu p  =(javax.swing.JPopupMenu) item.getParent();
-
-        this.getComponents();
-        System.out.println(this.getComponentPopupMenu());
+        try{
+            Picto picto = new Picto(this.currentImageId);
+            int n = JOptionPane.showConfirmDialog(
+                    this,
+                    "Pitogram "+picto.fileName+" zostanie usunięty",
+                    "An Inae Question",
+                    JOptionPane.YES_NO_OPTION);
+            if(n==0){
+                picto.delete();
+                srodekPanel.removeAll();
+                this.showImages();
+                srodekPanel.revalidate(); 
+            }
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        
+System.out.println(this.currentImageId);
+//          System.out.println( this);
+//        System.out.println(p);
         
     }//GEN-LAST:event_menuDeleteActionPerformed
 
     private void menuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuEditActionPerformed
+
+    private void menuDeleteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuDeleteMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_menuDeleteMousePressed
     public static void setIndex(Index i){
         index = i;
     }
@@ -272,10 +298,7 @@ public class PagePanel extends javax.swing.JPanel {
                 label.setName(id.toString());
                 label.addMouseListener(new java.awt.event.MouseAdapter() {
                     public void mousePressed(java.awt.event.MouseEvent evt) {
-                        JLabel label = (JLabel) evt.getComponent();
-                        label.getName();
-//                        this.selectedImage;
-                          System.out.println( label.getName());
+                        labelMousePressed(evt);
                     }
                 });
                 label.setComponentPopupMenu(popupImageMenu);
@@ -336,7 +359,7 @@ public class PagePanel extends javax.swing.JPanel {
 //        index.getContentPane().add(srodekPanel);
          */
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPicto;
