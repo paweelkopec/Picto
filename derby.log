@@ -1,0 +1,13 @@
+----------------------------------------------------------------
+Sun Apr 13 12:13:07 CEST 2014:
+ Uruchamianie wersji The Apache Software Foundation - Apache Derby - 10.8.3.0 - (1405108) systemu Derby: instancja a816c00e-0145-5a93-65b4-000000b17db8
+w katalogu bazy danych C:\Users\Paweł\Documents\NetBeansProjects\PictoDisplayer\db_picto  sun.misc.Launcher$AppClassLoader@df6ccd 
+
+java.vendor=Oracle Corporation
+java.runtime.version=1.7.0_45-b18
+user.dir=C:\Users\Paweł\Documents\NetBeansProjects\PictoDisplayer
+os.name=Windows 7
+os.arch=x86
+os.version=6.1
+derby.system.home=null
+Uruchomiono program ładujący klasę bazy danych - derby.database.classpath=''
