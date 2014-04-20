@@ -49,17 +49,13 @@ public class PagePanel extends javax.swing.JPanel {
      */
     public PagePanel(String pageName) {
         this.pageName = pageName;
-
         try {
             page = new Page();
             page.loadFromName(pageName);   
             initComponents();
         } catch (Exception e) {
-            
             System.out.println("Error - " + e.toString());
         }
-         
-        
     }
 
     /**
@@ -79,6 +75,7 @@ public class PagePanel extends javax.swing.JPanel {
         addPicto = new javax.swing.JButton();
         editPage = new javax.swing.JButton();
         deletePage = new javax.swing.JButton();
+        projector = new javax.swing.JButton();
         srodekPanel = new javax.swing.JPanel();
 
         fileChooser.setDialogTitle("Wybierz piktogram");
@@ -128,17 +125,26 @@ public class PagePanel extends javax.swing.JPanel {
             }
         });
 
+        projector.setText("Przeglądaj");
+        projector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                projectorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
+                .addGap(4, 4, 4)
                 .addComponent(addPicto)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(editPage)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(deletePage)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(projector)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -148,7 +154,8 @@ public class PagePanel extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(addPicto)
                     .addComponent(editPage)
-                    .addComponent(deletePage))
+                    .addComponent(deletePage)
+                    .addComponent(projector))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -179,7 +186,6 @@ public class PagePanel extends javax.swing.JPanel {
                 "Strona "+page.name+" zostanie usunięta",
                 "An Inane Question",
                 JOptionPane.YES_NO_OPTION);
-
         if(n==0){
             page.delete();
             this.setVisible(false);
@@ -261,6 +267,12 @@ System.out.println(this.currentImageId);
     private void menuDeleteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuDeleteMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuDeleteMousePressed
+
+    private void projectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectorActionPerformed
+        // TODO add your handling code here:
+        Projector projector = new Projector(this.page);
+        projector.setVisible(true);
+    }//GEN-LAST:event_projectorActionPerformed
     public static void setIndex(Index i){
         index = i;
     }
@@ -359,6 +371,7 @@ System.out.println(this.currentImageId);
 //        index.getContentPane().add(srodekPanel);
          */
     }
+    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -370,6 +383,7 @@ System.out.println(this.currentImageId);
     private javax.swing.JMenuItem menuDelete;
     private javax.swing.JMenuItem menuEdit;
     private javax.swing.JPopupMenu popupImageMenu;
+    private javax.swing.JButton projector;
     private javax.swing.JPanel srodekPanel;
     // End of variables declaration//GEN-END:variables
 }

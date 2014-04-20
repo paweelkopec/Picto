@@ -48,6 +48,18 @@ public class Picto{
         System.out.println(this.id);
     }
     
+    public Picto(ResultSet rec) {
+        try {
+            this.id = rec.getInt("id");
+            this.name = rec.getString("name");
+            this.fileName = rec.getString("file_name");
+            this.sort = rec.getInt("sort");
+            this.stats = rec.getInt("stats");
+        } catch (Exception e) {
+            System.out.println("Error - " + e.toString());
+        }
+    }
+
     public void loadFromName (String pageName){
         try {
             
@@ -116,6 +128,11 @@ public class Picto{
             
             System.out.println("Error - " + e.toString());
         }
+    }
+    
+    public void increaseStats(){
+        this.stats ++;
+        this.update();
     }
 
 }

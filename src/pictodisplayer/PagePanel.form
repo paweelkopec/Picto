@@ -80,12 +80,14 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="0" attributes="0">
-                  <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="4" max="-2" attributes="0"/>
                   <Component id="addPicto" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="editPage" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace type="separate" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
                   <Component id="deletePage" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="projector" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -98,6 +100,7 @@
                       <Component id="addPicto" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="editPage" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="deletePage" alignment="3" min="-2" max="-2" attributes="0"/>
+                      <Component id="projector" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
@@ -127,6 +130,14 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="deletePageActionPerformed"/>
+          </Events>
+        </Component>
+        <Component class="javax.swing.JButton" name="projector">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Przegl&#x105;daj"/>
+          </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="projectorActionPerformed"/>
           </Events>
         </Component>
       </SubComponents>
