@@ -57,9 +57,14 @@ public class Page{
             System.out.println("Error - " + e);
         } 
     } 
-        
+    /**
+     * Dodanie nowej strony
+     * @param cid ID kategori
+     * @param name Nazwa kategori
+     * @param sort Sortowanie kategori
+     * @param stats Liczba wyświetleń
+     */
     public static void add(Integer cid, String name, Integer sort, Integer stats ){
-        
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());

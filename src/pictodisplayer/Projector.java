@@ -21,7 +21,12 @@ import pictodisplayer.db.Page;
 import pictodisplayer.db.Picto;
 import pictodisplayer.db.Pictodb;
 import java.awt.event.*;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.*;
+import pictodisplayer.socket.Server;
+
 
 /**
  *
@@ -33,7 +38,10 @@ public class Projector extends javax.swing.JFrame {
     Picto pictos[];
     Integer currentImage;
     Timer timer;
+    Timer serverTimer;
     ImagePanel imagePane;
+    Server server;
+    Boolean isServerActived=false;
 
     /**
      * Creates new form Projector
@@ -61,6 +69,7 @@ public class Projector extends javax.swing.JFrame {
             start();
             timer = new Timer(2000, taskPerformer);
             timer.start();
+            
         } catch (Exception e) {
         }
     }
@@ -72,7 +81,7 @@ public class Projector extends javax.swing.JFrame {
         this.page = page;
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        } catch (Exception e) {
+        }catch (Exception e) {
         }
         initComponents();
         this.loadImages(this.page.id);
@@ -100,6 +109,10 @@ public class Projector extends javax.swing.JFrame {
         speed = new javax.swing.JComboBox();
         jLabel1 = new javax.swing.JLabel();
         slectedPictos = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        port = new javax.swing.JTextField();
+        serverSocket = new javax.swing.JToggleButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -177,6 +190,45 @@ public class Projector extends javax.swing.JFrame {
         slectedPictos.setPreferredSize(new java.awt.Dimension(12, 600));
         slectedPictos.setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Serwer"));
+
+        jLabel2.setText("Port:");
+
+        port.setText("1237");
+
+        serverSocket.setText("Start");
+        serverSocket.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                serverSocketActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(serverSocket, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(port)
+                        .addContainerGap())))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(serverSocket)
+                .addContainerGap(82, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -184,7 +236,9 @@ public class Projector extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addComponent(panelDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addComponent(slectedPictos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -194,7 +248,10 @@ public class Projector extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(panelDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
 
         pack();
@@ -237,6 +294,28 @@ public class Projector extends javax.swing.JFrame {
         this.imagePane.revalidate();
         this.imagePane.repaint();
     }//GEN-LAST:event_resetActionPerformed
+
+    private void serverSocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverSocketActionPerformed
+        // TODO add your handling code here:
+        try {
+            
+            Integer port = Integer.parseInt(this.port.getText());
+            server = new Server(2123);
+            
+//            String x[] ={};
+//            server = new Server();
+//            server.main(x);
+            ActionListener taskPerformer2 = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    getServerCommand();
+                }
+            };
+            this.serverTimer = new Timer(100, taskPerformer2);
+            serverTimer.start();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "ERROR: " +ex.getMessage());
+        }
+    }//GEN-LAST:event_serverSocketActionPerformed
 
     /**
      * @param args the command line arguments
@@ -288,6 +367,31 @@ public class Projector extends javax.swing.JFrame {
             System.out.println("Erroaar - " + e.toString());
         }
     }
+    
+   private void getServerCommand(){
+//        try {
+            server.run();
+            
+            String cmd = this.server.getCommand();
+            System.out.println("cmd - " + cmd);
+            if(cmd.equalsIgnoreCase("showImage")){
+
+                 
+                java.awt.event.MouseEvent evt =  new MouseEvent(
+                     labelDisplay,
+                     MouseEvent.MOUSE_CLICKED, 
+                     1,
+                     MouseEvent.BUTTON1, 
+                     0, 0, 
+                     2, 
+                     false);
+                this.labelDisplayMouseClicked(evt);    
+                
+            }
+//        } catch (IOException ex) {
+//            Logger.getLogger(Projector.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+    }
 
     private void loadImages(Integer PageId) {
         try {
@@ -317,12 +421,16 @@ public class Projector extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel labelDisplay;
     private javax.swing.JPanel panelDisplay;
     private javax.swing.JToggleButton pauze;
+    private javax.swing.JTextField port;
     private javax.swing.JButton reset;
+    private javax.swing.JToggleButton serverSocket;
     private javax.swing.JPanel slectedPictos;
     private javax.swing.JComboBox speed;
     // End of variables declaration//GEN-END:variables
