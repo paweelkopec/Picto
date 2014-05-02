@@ -74,7 +74,6 @@ public class Picto {
      */
     public void loadFromName(String pageName) {
         try {
-
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();

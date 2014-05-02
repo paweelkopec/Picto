@@ -1,4 +1,3 @@
-
 package pictodisplayer.db;
 
 import java.sql.Connection;
@@ -9,8 +8,9 @@ import java.sql.Statement;
 import pictodisplayer.*;
 
 /**
+ * Database Category
  *
- * @author Paweł
+ * @author Pawel Kopec <paweelkopec@gmail.com>
  */
 public class Category {
 
@@ -73,15 +73,12 @@ public class Category {
      * @param stats
      */
     public static void add(String name, String description, Integer sort, Integer stats) {
-
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
-
             st.executeUpdate("INSERT INTO categories "
                     + "(name, description, sort, stats, date) VALUES('" + name + "','" + description + "', " + sort + ", " + stats + ", CURRENT_DATE)");
-
             st.close();
         } catch (Exception e) {
 
@@ -93,15 +90,12 @@ public class Category {
      * Update Category
      */
     public void update() {
-
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
-
             st.executeUpdate("UPDATE categories  SET "
                     + "name='" + this.name + "', description='" + this.description + "', sort=" + this.sort + ", stats=" + this.stats + ", date=CURRENT_DATE WHERE id=" + this.id);
-
             st.close();
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
@@ -113,14 +107,11 @@ public class Category {
      */
     public static void all() {
         try {
-
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
-
             ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY name");
             while (rec.next()) {
-
             }
             st.close();
         } catch (Exception e) {

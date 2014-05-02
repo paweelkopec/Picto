@@ -32,7 +32,6 @@ public class Pictodb {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(data);
             Statement st = conn.createStatement();
-            
             DatabaseMetaData dbmd = conn.getMetaData();
             // st.executeUpdate("TRUNCATE TABLE categories");
             ResultSet rs = dbmd.getTables(null, "APP", "CATEGORIES", null);
@@ -74,7 +73,10 @@ public class Pictodb {
              System.out.println(e.toString());
         }
     }
-    
+    /**
+     * Get Database name
+     * @return String
+     */
     public static  String getName(){
         return name;
     }
