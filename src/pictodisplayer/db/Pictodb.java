@@ -9,20 +9,23 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-
 /**
- *
+ * Create tables
  * @author Pawel Kopec paweelkopec@gmail.com
  */
 public class Pictodb {
     protected static String name = "jdbc:derby:db_picto"; //default
     public static Connection conn;
-    
+    /**
+     * Construct set database name
+     * @param dbFileNamePrefix 
+     */
     public Pictodb(String dbFileNamePrefix) {
         name = "jdbc:derby:"+dbFileNamePrefix;
     }
-            
+    /**
+     * Create tables
+     */        
     public static void createDatabase() {
         String data = name+";create=true";
         try {
@@ -31,14 +34,14 @@ public class Pictodb {
             Statement st = conn.createStatement();
             
             DatabaseMetaData dbmd = conn.getMetaData();
-//            st.executeUpdate("TRUNCATE TABLE categories");
+            // st.executeUpdate("TRUNCATE TABLE categories");
             ResultSet rs = dbmd.getTables(null, "APP", "CATEGORIES", null);
             if (!rs.next()) {
-                //System.out.println("Hello Table " +  rs.getString(3) + " exists");
                 st.executeUpdate("CREATE TABLE categories (" +
                                   "id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS identity (START WITH 1, INCREMENT BY 1)," +
                                   "name VARCHAR(240) ," +
                                   "description VARCHAR(240) default NULL ," +
+                                  "file_name VARCHAR(240)," +
                                   "sort INTEGER default 0," +
                                   "stats INTEGER default 0," +
                                   "date date)");
@@ -66,12 +69,10 @@ public class Pictodb {
                                   "stats INTEGER default 0," +
                                   "date date)");
             }
- 
             st.close();
         } catch (Exception e) {
              System.out.println(e.toString());
         }
-        
     }
     
     public static  String getName(){

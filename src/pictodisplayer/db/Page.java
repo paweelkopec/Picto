@@ -11,7 +11,7 @@ import pictodisplayer.*;
 
 /**
  *
- * @author Paweł
+ * @author Pawel Kopec <paweelkopec@gmail.com>
  */
 public class Page{
     public Integer id;
@@ -22,10 +22,12 @@ public class Page{
     
     public static String db = "jdbc:derby:db_picto";
 
-    
+    /**
+     * Load form database
+     * @param pageName 
+     */
     public void loadFromName (String pageName){
         try {
-            
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
@@ -46,6 +48,9 @@ public class Page{
             System.out.println("Error - " + e.toString());
         } 
     }    
+    /**
+     * Delete current Page
+     */
     public void delete (){
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -58,7 +63,7 @@ public class Page{
         } 
     } 
     /**
-     * Dodanie nowej strony
+     * Add new Page
      * @param cid ID kategori
      * @param name Nazwa kategori
      * @param sort Sortowanie kategori
@@ -79,20 +84,18 @@ public class Page{
             System.out.println("Error - " + e.toString());
         }
     }
-    
+    /**
+     * Update current Page
+     */ 
     public void update(){
-        
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
-
             st.executeUpdate("UPDATE pages  SET "
                       + "name='"+this.name+"', sort="+this.sort+", stats="+this.stats+", date=CURRENT_DATE WHERE id="+this.id);
-            
             st.close();
         } catch (Exception e) {
-            
             System.out.println("Error - " + e.toString());
         }
     }

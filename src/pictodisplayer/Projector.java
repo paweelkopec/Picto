@@ -1,9 +1,7 @@
 package pictodisplayer;
 
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Displays images.
  */
 import pictodisplayer.*;
 import java.awt.Color;
@@ -27,8 +25,8 @@ import java.util.logging.Logger;
 import javax.swing.*;
 import pictodisplayer.socket.Server;
 
-
 /**
+ * Image Projector
  *
  * @author Pawel Kopec <paweelkopec@gmail.com>
  */
@@ -41,7 +39,7 @@ public class Projector extends javax.swing.JFrame {
     Timer serverTimer;
     ImagePanel imagePane;
     Server server;
-    Boolean isServerActived=false;
+    Boolean isServerActived = false;
 
     /**
      * Creates new form Projector
@@ -59,6 +57,9 @@ public class Projector extends javax.swing.JFrame {
         this.slectedPictos.add(new JScrollPane(imagePane));
     }
 
+    /**
+     * Run Timers
+     */
     public void init() {
         try {
             ActionListener taskPerformer = new ActionListener() {
@@ -69,7 +70,6 @@ public class Projector extends javax.swing.JFrame {
             start();
             timer = new Timer(2000, taskPerformer);
             timer.start();
-            
         } catch (Exception e) {
         }
     }
@@ -81,7 +81,7 @@ public class Projector extends javax.swing.JFrame {
         this.page = page;
         try {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
-        }catch (Exception e) {
+        } catch (Exception e) {
         }
         initComponents();
         this.loadImages(this.page.id);
@@ -257,6 +257,11 @@ public class Projector extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Stop display timer
+     *
+     * @param evt
+     */
     private void pauzeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauzeActionPerformed
 
         if (this.pauze.isSelected()) {
@@ -265,12 +270,21 @@ public class Projector extends javax.swing.JFrame {
             this.timer.start();
         }
     }//GEN-LAST:event_pauzeActionPerformed
-
+    /**
+     * Changw display speed
+     *
+     * @param evt
+     */
     private void speedActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_speedActionPerformed
         String value = (String) this.speed.getSelectedItem();
         this.timer.setDelay(Integer.parseInt(value));
     }//GEN-LAST:event_speedActionPerformed
 
+    /**
+     * Adds image to the projection
+     *
+     * @param evt
+     */
     private void labelDisplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDisplayMouseClicked
         try {
             Integer i = this.currentImage - 1;
@@ -287,24 +301,30 @@ public class Projector extends javax.swing.JFrame {
             System.out.println("Error - " + e.toString());
         }
     }//GEN-LAST:event_labelDisplayMouseClicked
-
+    /**
+     * Clear images on windows
+     *
+     * @param evt
+     */
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-        // TODO add your handling code here:
+
         this.imagePane.removeAll();
         this.imagePane.revalidate();
         this.imagePane.repaint();
     }//GEN-LAST:event_resetActionPerformed
 
+    /**
+     * Run server socket
+     *
+     * @param evt
+     */
     private void serverSocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverSocketActionPerformed
         // TODO add your handling code here:
         try {
-            
+
             Integer port = Integer.parseInt(this.port.getText());
-            server = new Server(2123);
-            
-//            String x[] ={};
-//            server = new Server();
-//            server.main(x);
+            server = new Server(port);
+
             ActionListener taskPerformer2 = new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     getServerCommand();
@@ -313,7 +333,7 @@ public class Projector extends javax.swing.JFrame {
             this.serverTimer = new Timer(100, taskPerformer2);
             serverTimer.start();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "ERROR: " +ex.getMessage());
+            JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage());
         }
     }//GEN-LAST:event_serverSocketActionPerformed
 
@@ -352,6 +372,9 @@ public class Projector extends javax.swing.JFrame {
         });
     }
 
+    /**
+     * Displays the current image
+     */
     private void start() {
         try {
             if (this.currentImage >= this.pictos.length) {
@@ -367,35 +390,36 @@ public class Projector extends javax.swing.JFrame {
             System.out.println("Erroaar - " + e.toString());
         }
     }
-    
-   private void getServerCommand(){
-//        try {
-            server.run();
-            
-            String cmd = this.server.getCommand();
-            System.out.println("cmd - " + cmd);
-            if(cmd.equalsIgnoreCase("showImage")){
 
-                 
-                java.awt.event.MouseEvent evt =  new MouseEvent(
-                     labelDisplay,
-                     MouseEvent.MOUSE_CLICKED, 
-                     1,
-                     MouseEvent.BUTTON1, 
-                     0, 0, 
-                     2, 
-                     false);
-                this.labelDisplayMouseClicked(evt);    
-                
-            }
-//        } catch (IOException ex) {
-//            Logger.getLogger(Projector.class.getName()).log(Level.SEVERE, null, ex);
-//        }
+    /**
+     * Command from socket
+     */
+    private void getServerCommand() {
+        server.run();
+        String cmd = this.server.getCommand();
+        System.out.println("cmd - " + cmd);
+        if (cmd.equalsIgnoreCase("showImage")) {
+
+            java.awt.event.MouseEvent evt = new MouseEvent(
+                    labelDisplay,
+                    MouseEvent.MOUSE_CLICKED,
+                    1,
+                    MouseEvent.BUTTON1,
+                    0, 0,
+                    2,
+                    false);
+            this.labelDisplayMouseClicked(evt);
+
+        }
     }
 
+    /**
+     * Load images from database table page
+     *
+     * @param PageId
+     */
     private void loadImages(Integer PageId) {
         try {
-
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
 
