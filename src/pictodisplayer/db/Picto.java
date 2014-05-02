@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import pictodisplayer.*;
 
@@ -155,5 +156,32 @@ public class Picto {
         this.stats++;
         this.update();
     }
+    /**
+     * List pictos from page
+     * @param pageID
+     * @return
+     * @throws ClassNotFoundException
+     * @throws SQLException 
+     */
+    public static Picto[] list(int pageID) throws ClassNotFoundException, SQLException{
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Connection conn = DriverManager.getConnection(Pictodb.getName());
+            Statement st = conn.createStatement();
+            int rows = 0;
+            ResultSet rec0 = st.executeQuery("SELECT COUNT(*) FROM pictos WHERE pid="+pageID);
+            while (rec0.next()){
+                rows = rec0.getInt(1);
+            }
+            ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE pid="+pageID);
+            System.out.println("iiiiiiiiiiii"+ rows);
+            Picto pictos[] = new Picto[rows];
+            int i = 0;
+            while (rec.next()) {
+                pictos[i] = new Picto(rec);
+                i++;
+            }
+            return pictos;     
+    }
+    
 
 }

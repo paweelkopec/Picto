@@ -1,62 +1,62 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pictodisplayer.socket;
 
 /**
+ * Socket protocol
  *
  * @author Pawel Kopec <paweelkopec@gmail.com>
  */
 public class Protocol {
+
     private static final int START = 0;
     private static final int WAITING = 1;
     private static final int SENDCOMMANDS = 2;
-    private static final int SENDANSWER= 3;
+    private static final int SENDANSWER = 3;
     private static final int ANOTHER = 4;
-    
     private int state = START;
-    
-    private String command[]={"","showImage","clearImages", "reset"};
-    private String request= "";
-    
+
+    private String command[] = {"", "show", "clearImages", "reset"};
+    private String request = "";
+
+    /**
+     * Socket Process
+     *
+     * @param theInput
+     * @return String
+     */
     public String processInput(String theInput) {
         String theOutput = null;
-        
-        
         if (state == START) {
             theOutput = "Połączono. Komendy: ";
             for (String s : command) {
-                theOutput += s +" ";
+                theOutput += s + " ";
             }
             state = WAITING;
-        }else if(state == WAITING){
-            if (theInput.equalsIgnoreCase("showImage")) {
+        } else if (state == WAITING) {
+            if (theInput.equalsIgnoreCase("show")) {
                 theOutput = "showImage: OK";
                 request = theInput;
-            }else if(theInput.equalsIgnoreCase("clearImages")){
+            } else if (theInput.equalsIgnoreCase("clearImages")) {
                 theOutput = "clearImages: OK";
                 request = theInput;
-            }
-            else if(theInput.equalsIgnoreCase("reset")){
+            } else if (theInput.equalsIgnoreCase("reset")) {
                 theOutput = "creset: OK";
                 request = theInput;
-            }
-            else{
-                theOutput = "Niepoprawna Komenda '"+theInput+"'";
+            } else {
+                theOutput = "Niepoprawna Komenda '" + theInput + "'";
                 request = "";
             }
         }
-        
         return theOutput;
     }
-    
-    public String getRequest(){
-        
+
+    /**
+     * Get current request
+     *
+     * @return
+     */
+    public String getRequest() {
         String ret = request;
-        request ="";
+        request = "";
         return ret;
     }
 }

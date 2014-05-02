@@ -24,11 +24,36 @@ public class Category {
     public static String db = "jdbc:derby:db_picto";
 
     /**
-     * Load Category from name
+     * Construct load from id
+     * @param id 
+     */
+    public Category(int id){
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Connection conn = DriverManager.getConnection(Pictodb.getName());
+            Statement st = conn.createStatement();
+            ResultSet rec = st.executeQuery("SELECT * FROM categories WHERE id = " +  id );
+            while (rec.next()) {
+                this.id = rec.getInt("id");
+                name = rec.getString("name");
+                description = rec.getString("description");
+                file_name = rec.getString("file_name");
+                sort = rec.getInt("sort");
+                stats = rec.getInt("stats");
+                break;
+            }
+            
+            st.close();
+        } catch (Exception e) {
+            System.out.println("Error - " + e.toString());
+        }
+    }
+    /**
+     * Construct load from name
      *
      * @param categoryName
      */
-    public void loadFromName(String categoryName) {
+    public Category(String categoryName) {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
@@ -58,6 +83,10 @@ public class Category {
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
             st.executeUpdate("DELETE FROM categories WHERE id =" + this.id);
+            Page pages[] = Page.list(this.id);
+            for(int i = 0; i < pages.length; i++) { 
+                pages[i].delete();
+            }
             st.close();
         } catch (Exception e) {
             System.out.println("Error - " + e);
