@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pictodisplayer;
 
 import pictodisplayer.db.Pictodb;
@@ -16,12 +10,13 @@ import pictodisplayer.db.Category;
 
 /**
  *
- * @author Paweł
+ *  * @author Pawel Kopec <paweelkopec@gmail.com>
  */
 public class NewCategory extends javax.swing.JFrame {
 
     protected static Pictodb db;
     private static Index index;
+
     /**
      * Creates new form nowaKategoria
      */
@@ -78,11 +73,6 @@ public class NewCategory extends javax.swing.JFrame {
         jLabel2.setText("Opis");
 
         name.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Nazwa");
 
@@ -138,26 +128,27 @@ public class NewCategory extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameActionPerformed
-
+    /**
+     * Press anuluj event
+     *
+     * @param evt
+     */
     private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
-        // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_anulujActionPerformed
-
+    /**
+     * Press OK event
+     *
+     * @param evt
+     */
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        // TODO add your handling code here:
-        if(this.name.getText().equals("")){
+        if (this.name.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Wprowadź nazwę kategori.");
             return;
         }
-        new Category().add(this.name.getText(), this.description.getText(), 0, 0);
+        Category.add(this.name.getText(), this.description.getText(), 0, 0);
         index.reLoadTree();
         this.setVisible(false);
-  
     }//GEN-LAST:event_okActionPerformed
 
     /**
@@ -205,11 +196,22 @@ public class NewCategory extends javax.swing.JFrame {
     private javax.swing.JTextField name;
     private javax.swing.JButton ok;
     // End of variables declaration//GEN-END:variables
-    public static void setDb(Pictodb pdb){
-        db  = pdb;
+    /**
+     * Set Pictodb Object
+     *
+     * @param pdb
+     */
+    public static void setDb(Pictodb pdb) {
+        db = pdb;
     }
-    public static void setIndex(Index i){
+
+    /**
+     * Set Index Object
+     *
+     * @param i
+     */
+    public static void setIndex(Index i) {
         index = i;
     }
-            
+
 }

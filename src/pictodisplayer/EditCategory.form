@@ -149,9 +149,6 @@
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nameActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel1">
           <Properties>
@@ -160,7 +157,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Kolejno&#x15b;&#x107; wy&#x15b;wietlania"/>
+            <Property name="text" type="java.lang.String" value="Liczba wy&#x15b;wietle&#x144;"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="sort">
@@ -169,9 +166,6 @@
               <Font name="Tahoma" size="12" style="0"/>
             </Property>
           </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="sortActionPerformed"/>
-          </Events>
         </Component>
       </SubComponents>
     </Container>

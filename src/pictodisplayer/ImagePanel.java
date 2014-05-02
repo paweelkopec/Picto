@@ -1,33 +1,26 @@
 package pictodisplayer;
 
-
 import java.awt.Color;
 import java.awt.Dimension;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
  *
- * @author Pawel Kopec <paweelkopec@gmail.com>
+ * Image panel content
  */
 public class ImagePanel extends javax.swing.JPanel {
 
     /**
      * Creates new form ImagePane
      */
-        public ImagePanel() {
-            setLayout(new WrapLayout());
-            setBackground(Color.white);
-        }
+    public ImagePanel() {
+        setLayout(new WrapLayout());
+        setBackground(Color.white);
+    }
 
-        @Override
-        public Dimension getPreferredSize() {
-            return getComponentCount() == 0 ? new Dimension(200, 200) : super.getPreferredSize();
-        }
+    @Override
+    public Dimension getPreferredSize() {
+        return getComponentCount() == 0 ? new Dimension(200, 200) : super.getPreferredSize();
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

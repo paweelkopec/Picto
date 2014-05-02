@@ -1,6 +1,5 @@
-
-
 package pictodisplayer;
+
 import pictodisplayer.db.Pictodb;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -12,13 +11,14 @@ import pictodisplayer.db.Page;
 
 /**
  *
- * @author Paweł
+ * @author Pawel Kopec <paweelkopec@gmail.com>
  */
 public class NewPage extends javax.swing.JFrame {
 
     protected static Pictodb db;
     private static Index index;
     private Integer categoryId;
+
     /**
      * Creates new form nowaKategoria
      */
@@ -66,11 +66,6 @@ public class NewPage extends javax.swing.JFrame {
         });
 
         name.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Nazwa");
 
@@ -117,23 +112,26 @@ public class NewPage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameActionPerformed
-
+    /**
+     * Press anuluj event
+     *
+     * @param evt
+     */
     private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
-        // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_anulujActionPerformed
 
+    /**
+     * Press ok event
+     *
+     * @param evt
+     */
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        // TODO add your handling code here:
-        if(this.name.getText().equals("")){
+        if (this.name.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Wprowadź nazwę kategori.");
             return;
         }
-        new Page().add(categoryId, this.name.getText(), 0, 0);
+        Page.add(categoryId, this.name.getText(), 0, 0);
         index.reLoadTree();
         this.setVisible(false);
     }//GEN-LAST:event_okActionPerformed
@@ -146,11 +144,22 @@ public class NewPage extends javax.swing.JFrame {
     private javax.swing.JTextField name;
     private javax.swing.JButton ok;
     // End of variables declaration//GEN-END:variables
-    public static void setDb(Pictodb pdb){
-        db  = pdb;
+    /**
+     * Set Pictodb handle
+     *
+     * @param pdb
+     */
+    public static void setDb(Pictodb pdb) {
+        db = pdb;
     }
-    public static void setIndex(Index i){
+
+    /**
+     * Set Index handle
+     *
+     * @param i
+     */
+    public static void setIndex(Index i) {
         index = i;
     }
-            
+
 }

@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pictodisplayer;
 
 import pictodisplayer.db.Pictodb;
@@ -15,13 +9,14 @@ import javax.swing.UIManager;
 import pictodisplayer.db.Page;
 
 /**
- *
+ * Edit Page
  * @author Paweł
  */
 public class EditPage extends javax.swing.JFrame {
 
     private PagePanel pagePanel;
     private Page page;
+
     /**
      * Creates new form nowaKategoria
      */
@@ -73,22 +68,12 @@ public class EditPage extends javax.swing.JFrame {
         });
 
         name.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        name.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nameActionPerformed(evt);
-            }
-        });
 
         jLabel1.setText("Nazwa");
 
         jLabel3.setText("Kolejność wyświetlania");
 
         sort.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
-        sort.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                sortActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -143,35 +128,31 @@ public class EditPage extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void nameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nameActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nameActionPerformed
-
+    /**
+     * Press anuluj event
+     *
+     * @param evt
+     */
     private void anulujActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_anulujActionPerformed
-        // TODO add your handling code here:
         this.setVisible(false);
     }//GEN-LAST:event_anulujActionPerformed
-
+    /**
+     * Press ok event
+     *
+     * @param evt
+     */
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        // TODO add your handling code here:
-        if(this.name.getText().equals("")){
+        if (this.name.getText().equals("")) {
             JOptionPane.showMessageDialog(this, "Wprowadź nazwę strony.");
             return;
         }
-        page.name =this.name.getText();
+        page.name = this.name.getText();
         page.sort = Integer.parseInt(this.sort.getText());
         page.update();
         pagePanel.repaint();
         pagePanel.refresh();
         this.setVisible(false);
-  
     }//GEN-LAST:event_okActionPerformed
-
-    private void sortActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_sortActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_sortActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anuluj;
@@ -182,10 +163,13 @@ public class EditPage extends javax.swing.JFrame {
     private javax.swing.JButton ok;
     private javax.swing.JTextField sort;
     // End of variables declaration//GEN-END:variables
-
-    public  void setCategPanel(PagePanel pP){
+    /**
+     * Set CategoryPanel handle
+     *
+     * @param pP
+     */
+    public void setCategPanel(PagePanel pP) {
         pagePanel = pP;
     }
-    
-            
+
 }

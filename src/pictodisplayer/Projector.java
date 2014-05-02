@@ -194,7 +194,7 @@ public class Projector extends javax.swing.JFrame {
 
         jLabel2.setText("Port:");
 
-        port.setText("1237");
+        port.setText("3568");
 
         serverSocket.setText("Start");
         serverSocket.addActionListener(new java.awt.event.ActionListener() {
@@ -263,7 +263,6 @@ public class Projector extends javax.swing.JFrame {
      * @param evt
      */
     private void pauzeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pauzeActionPerformed
-
         if (this.pauze.isSelected()) {
             this.timer.stop();
         } else {
@@ -307,7 +306,6 @@ public class Projector extends javax.swing.JFrame {
      * @param evt
      */
     private void resetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetActionPerformed
-
         this.imagePane.removeAll();
         this.imagePane.revalidate();
         this.imagePane.repaint();
@@ -319,9 +317,7 @@ public class Projector extends javax.swing.JFrame {
      * @param evt
      */
     private void serverSocketActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serverSocketActionPerformed
-        // TODO add your handling code here:
         try {
-
             Integer port = Integer.parseInt(this.port.getText());
             server = new Server(port);
 
@@ -398,8 +394,7 @@ public class Projector extends javax.swing.JFrame {
         server.run();
         String cmd = this.server.getCommand();
         System.out.println("cmd - " + cmd);
-        if (cmd.equalsIgnoreCase("showImage")) {
-
+        if (cmd.equalsIgnoreCase("show")) {
             java.awt.event.MouseEvent evt = new MouseEvent(
                     labelDisplay,
                     MouseEvent.MOUSE_CLICKED,

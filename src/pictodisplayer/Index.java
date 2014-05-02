@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pictodisplayer;
 
 import java.awt.BorderLayout;
@@ -18,15 +12,18 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 import pictodisplayer.db.Pictodb;
+
 /**
  *
- * @author Paweł
+ * @author Pawel Kopec <paweelkopec@gmail.com>
  */
 public class Index extends javax.swing.JFrame {
 
     protected static Pictodb db;
+
     /**
      * Creates new form Index
      */
@@ -110,59 +107,60 @@ public class Index extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Press nowaKategoria event
+     *
+     * @param evt
+     */
     private void nowaKategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nowaKategoriaActionPerformed
-        // TODO add your handling code here:
         NewCategory nowaKategoria = new NewCategory();
         nowaKategoria.setDb(this.db);
         nowaKategoria.setIndex(this);
         nowaKategoria.setVisible(true);
     }//GEN-LAST:event_nowaKategoriaActionPerformed
-
+    /**
+     * Category tree pressed
+     *
+     * @param evt
+     */
     private void categoryTreeValueChanged(javax.swing.event.TreeSelectionEvent evt) {//GEN-FIRST:event_categoryTreeValueChanged
-        // TODO add your handling code here:
-           TreePath path = categoryTree.getSelectionPath();
-           System.out.println("kategoria glowna "); 
-           
-           try{
-               DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)  path.getLastPathComponent();
-           }catch(Exception e){
-            System.out.println("Error -"+e); 
+        TreePath path = categoryTree.getSelectionPath();
+        System.out.println("kategoria glowna ");
+        try {
+            PictoTreeNode selectedNode = (PictoTreeNode) path.getLastPathComponent();
+        } catch (Exception e) {
+            System.out.println("Error -" + e);
             return;
-          }
-           
-           DefaultMutableTreeNode selectedNode = (DefaultMutableTreeNode)  path.getLastPathComponent();
-           Object userObject = selectedNode.getUserObject();
-           
-           selectedNode.getParent();
-
-            if(path.toString().equals("[Kategorie]")){
-               System.out.println("kategoria glowna "); 
-            }else if( selectedNode.getParent().toString().equals("Kategorie")){
-               //kategoria
-               containerPanel.removeAll();
-               CategoryPanel cP = new CategoryPanel(selectedNode.getUserObject().toString());
-               cP.setIndex(this);
-               containerPanel.add(cP);
-               containerPanel.invalidate();
-               containerPanel.repaint();
-               CardLayout cl = (CardLayout)(containerPanel.getLayout());
-               cl.next(containerPanel);
-               
-               System.out.println("kategoria " + selectedNode.getUserObject());
-           }
-           else if(!selectedNode.getParent().toString().equals("Kategorie")){
-               System.out.println("strona" + selectedNode.getUserObject());
-               //strona
-               containerPanel.removeAll();
-               PagePanel pP = new PagePanel(selectedNode.getUserObject().toString());
-               pP.setIndex(this);
-               containerPanel.add(pP);
-               containerPanel.invalidate();
-               containerPanel.repaint();
-               CardLayout cl = (CardLayout)(containerPanel.getLayout());
-               cl.next(containerPanel);
-           }
+        }
+        PictoTreeNode selectedNode = (PictoTreeNode) path.getLastPathComponent();
+        Object userObject = selectedNode.getUserObject();
+        selectedNode.getParent();
+        if (path.toString().equals("[Kategorie]")) {
+            System.out.println("kategoria glowna ");
+        } else if (selectedNode.getParent().toString().equals("Kategorie")) {
+            //category
+            containerPanel.removeAll();
+            System.out.println("KID "+ selectedNode.ID);
+            CategoryPanel cP = new CategoryPanel(selectedNode.ID);
+            cP.setIndex(this);
+            containerPanel.add(cP);
+            containerPanel.invalidate();
+            containerPanel.repaint();
+            CardLayout cl = (CardLayout) (containerPanel.getLayout());
+            cl.next(containerPanel);
+        } else if (!selectedNode.getParent().toString().equals("Kategorie")) {
+            System.out.println("strona" + selectedNode.getUserObject());
+            //page
+            containerPanel.removeAll();
+            System.out.println("PID "+ selectedNode.ID);
+            PagePanel pP = new PagePanel(selectedNode.ID);
+            pP.setIndex(this);
+            containerPanel.add(pP);
+            containerPanel.invalidate();
+            containerPanel.repaint();
+            CardLayout cl = (CardLayout) (containerPanel.getLayout());
+            cl.next(containerPanel);
+        }
     }//GEN-LAST:event_categoryTreeValueChanged
 
     /**
@@ -196,11 +194,9 @@ public class Index extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new Index().setVisible(true);
-                
             }
         });
     }
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree categoryTree;
@@ -211,75 +207,58 @@ public class Index extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private static javax.swing.tree.DefaultMutableTreeNode treeNode;
-    
-    public static void createTree(){
-
-       treeNode = new javax.swing.tree.DefaultMutableTreeNode("Kategorie");
-       try {
-            
+    /**
+     * Create categorys tree
+     */
+    public static void createTree() {
+        treeNode = new javax.swing.tree.DefaultMutableTreeNode("Kategorie");
+        try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
-            
-         
-            
             Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             Statement st2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY sort, name ASC");
-            int rows =0;
-            if ( rec.last()) {
-                 rows = rec.getRow();
+            ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY  name ASC");
+            int rows = 0;
+            if (rec.last()) {
+                rows = rec.getRow();
                 rec.beforeFirst();
             }
-             ResultSet rec2 = st2.executeQuery("SELECT * FROM pages");
-            int rows2 =0;
-            if ( rec2.last()) {
-                 rows2 = rec2.getRow();
+            ResultSet rec2 = st2.executeQuery("SELECT * FROM pages ORDER BY  name ASC");
+            int rows2 = 0;
+            if (rec2.last()) {
+                rows2 = rec2.getRow();
                 rec2.beforeFirst();
             }
-
-            javax.swing.tree.DefaultMutableTreeNode[] nodes = new javax.swing.tree.DefaultMutableTreeNode[rows];
-            javax.swing.tree.DefaultMutableTreeNode[] pages = new javax.swing.tree.DefaultMutableTreeNode[rows2];
-            Integer i=0;
-            Integer j=0;
+            PictoTreeNode[] nodes = new PictoTreeNode[rows];
+            PictoTreeNode[] pages = new PictoTreeNode[rows2];
+            Integer i = 0;
+            Integer j = 0;
             while (rec.next()) {
-                System.out.println("-" + rec.getString("name")+"-" );
-                nodes[i]  = new javax.swing.tree.DefaultMutableTreeNode(rec.getString("name"));
-                ResultSet rec3 = st2.executeQuery("SELECT * FROM pages WHERE cid="+rec.getInt("id")+" ORDER BY sort, name ASC");
+                nodes[i] = new PictoTreeNode(rec.getString("name"));
+                nodes[i].setID(rec.getInt("id"));
+                ResultSet rec3 = st2.executeQuery("SELECT * FROM pages WHERE cid=" + rec.getInt("id") + " ORDER BY sort, name ASC");
                 while (rec3.next()) {
-                     System.out.println("-" + rec3.getString("name")+"-" );
-                      pages[j]  = new javax.swing.tree.DefaultMutableTreeNode(rec3.getString("name"));
-                      nodes[i].add(pages[j]);
-                      j++;
+                    pages[j] = new PictoTreeNode(rec3.getString("name"));
+                    pages[j].setID(rec3.getInt("id"));
+                    nodes[i].add(pages[j]);
+                    j++;
                 }
                 treeNode.add(nodes[i]);
                 i++;
             }
             st.close();
         } catch (Exception e) {
-            
             System.out.println("Error - " + e.toString());
         }
-
-//        javax.swing.tree.DefaultMutableTreeNode treeNode2 = new javax.swing.tree.DefaultMutableTreeNode("colors");
-//        javax.swing.tree.DefaultMutableTreeNode treeNode3 = new javax.swing.tree.DefaultMutableTreeNode("blue");
-//        treeNode2.add(treeNode3);
-
     }
-       public void reLoadTree() {       
-           createTree();
-           categoryTree.removeAll();
-           categoryTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode));
-           categoryTree.addTreeSelectionListener(null);
-           
-       }
-       
-//       public void valueChanged(TreeSelectionEvent e) {
-//           System.out.println("Error - " );
-//           DefaultMutableTreeNode node = treeNode;
-//           jTree1.getLastSelectedPathComponent();
-//           if (node == null) return;
-//           
-//           Object nodeInfo = node.getUserObject();
-//
-//       }
+
+    /**
+     * Refresh tree
+     */
+    public void reLoadTree() {
+        createTree();
+        categoryTree.removeAll();
+        categoryTree.setModel(new javax.swing.tree.DefaultTreeModel(treeNode));
+        categoryTree.addTreeSelectionListener(null);
+    }
 }

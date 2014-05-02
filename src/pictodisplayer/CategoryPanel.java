@@ -1,18 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pictodisplayer;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import pictodisplayer.db.Pictodb;
 import pictodisplayer.db.Category;
+import pictodisplayer.db.Page;
 
 /**
  *
@@ -24,26 +22,34 @@ public class CategoryPanel extends javax.swing.JPanel {
     private Integer categoryID;
     private Category category;
     private static Index index;
-    
+
     /**
      * Creates new form category
      */
     public CategoryPanel(String categoryName) {
         this.categoryName = categoryName;
         initComponents();
-        
         try {
-            category = new Category();
-            category.loadFromName(categoryName);
-            categoryDescription.setText(category.description);    
-
+            category = new Category(categoryName);
+            categoryDescription.setText(category.description);
         } catch (Exception e) {
-            
             System.out.println("Error - " + e.toString());
         }
-        
-        
     }
+    /**
+     * Creates new form category
+     * @param id 
+     */
+    public CategoryPanel(int id){
+        initComponents();
+        try {
+            category = new Category(id);
+            categoryDescription.setText(category.description);
+        } catch (Exception e) {
+            System.out.println("Error - " + e.toString());
+        }
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -135,44 +141,58 @@ public class CategoryPanel extends javax.swing.JPanel {
 
         categoryDescription.getAccessibleContext().setAccessibleDescription("");
     }// </editor-fold>//GEN-END:initComponents
-
+/**
+     * Delete Category
+     *
+     * @param evt
+     */
     private void usunKategorieActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_usunKategorieActionPerformed
-        // TODO add your handling code here:
         int n = JOptionPane.showConfirmDialog(
                 this,
-                "Kategoria "+category.name+" zostanie usunięta",
+                "Kategoria " + category.name + " zostanie usunięta",
                 "An Inane Question",
                 JOptionPane.YES_NO_OPTION);
-
-        if(n==0){
+        if (n == 0) {
             category.delete();
             this.setVisible(false);
             index.reLoadTree();
         }
-
-
     }//GEN-LAST:event_usunKategorieActionPerformed
-
+    /**
+     * Edit Category
+     *
+     * @param evt
+     */
     private void editCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editCategoryActionPerformed
-        // TODO add your handling code here:
         EditCategory eC = new EditCategory(category);
         eC.setCategPanel(this);
         eC.setVisible(true);
     }//GEN-LAST:event_editCategoryActionPerformed
-
+    /**
+     * New Page
+     *
+     * @param evt
+     */
     private void newPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newPageActionPerformed
-        // TODO add your handling code here:
         NewPage nP = new NewPage(category.id);
         nP.setIndex(index);
         nP.setVisible(true);
     }//GEN-LAST:event_newPageActionPerformed
-    public static void setIndex(Index i){
+    /**
+     * Set Index
+     *
+     * @param i
+     */
+    public static void setIndex(Index i) {
         index = i;
     }
-    
-    public void refresh(){
+
+    /**
+     * Refresh
+     */
+    public void refresh() {
         index.reLoadTree();
-        categoryDescription.setText(category.description);  
+        categoryDescription.setText(category.description);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

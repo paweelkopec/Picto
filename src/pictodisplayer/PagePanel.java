@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package pictodisplayer;
 
 import java.awt.Color;
@@ -30,6 +24,7 @@ import pictodisplayer.PictoFilter;
 import pictodisplayer.db.Picto;
 import pictodisplayer.ImagePanel;
 import pictodisplayer.WrapLayout;
+
 /**
  *
  * @author Pawel Kopec <paweelkopec@gmail.com>
@@ -41,23 +36,32 @@ public class PagePanel extends javax.swing.JPanel {
     private Page page;
     private static Index index;
     private Integer currentImageId;
-    
     JLabel display;
-    ImagePanel         imagePane;
+    ImagePanel imagePane;
+
     /**
      * Creates new form category
      */
     public PagePanel(String pageName) {
         this.pageName = pageName;
         try {
-            page = new Page();
-            page.loadFromName(pageName);   
+            page = new Page(pageName);
             initComponents();
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
         }
     }
-
+    /**
+     * Creates new form category
+     */
+    public PagePanel(int id) {
+        try {
+            page = new Page(id);
+            initComponents();
+        } catch (Exception e) {
+            System.out.println("Error - " + e.toString());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -178,36 +182,42 @@ public class PagePanel extends javax.swing.JPanel {
 
         showImages();
     }// </editor-fold>//GEN-END:initComponents
-
+    /**
+     * Press delete event
+     *
+     * @param evt
+     */
     private void deletePageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deletePageActionPerformed
         // TODO add your handling code here:
         int n = JOptionPane.showConfirmDialog(
                 this,
-                "Strona "+page.name+" zostanie usunięta",
+                "Strona " + page.name + " zostanie usunięta",
                 "An Inane Question",
                 JOptionPane.YES_NO_OPTION);
-        if(n==0){
+        if (n == 0) {
             page.delete();
             this.setVisible(false);
             index.reLoadTree();
         }
-
-
     }//GEN-LAST:event_deletePageActionPerformed
-
+    /**
+     * Press edit event
+     *
+     * @param evt
+     */
     private void editPageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_editPageActionPerformed
-
         EditPage eP = new EditPage(page);
         eP.setCategPanel(this);
         eP.setVisible(true);
-        
     }//GEN-LAST:event_editPageActionPerformed
-
+    /**
+     * Press add event
+     *
+     * @param evt
+     */
     private void addPictoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPictoActionPerformed
-
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-
             File file = fileChooser.getSelectedFile();
             try {
                 File dir = new File("C:\\PictoDisplayer\\");
@@ -230,77 +240,99 @@ public class PagePanel extends javax.swing.JPanel {
             System.out.println("File access cancelled by user.");
         }
     }//GEN-LAST:event_addPictoActionPerformed
-    private void labelMousePressed(java.awt.event.MouseEvent evt){
+    /**
+     * Press lable event
+     *
+     * @param evt
+     */
+    private void labelMousePressed(java.awt.event.MouseEvent evt) {
         System.out.println("labelMousePressed");
         JLabel label = (JLabel) evt.getComponent();
         this.currentImageId = Integer.parseInt(label.getName());
     }
-    private void menuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeleteActionPerformed
 
-        try{
+    /**
+     * Press menu delete event
+     *
+     * @param evt
+     */
+    private void menuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuDeleteActionPerformed
+        try {
             Picto picto = new Picto(this.currentImageId);
             int n = JOptionPane.showConfirmDialog(
                     this,
-                    "Pitogram "+picto.fileName+" zostanie usunięty",
+                    "Pitogram " + picto.fileName + " zostanie usunięty",
                     "An Inae Question",
                     JOptionPane.YES_NO_OPTION);
-            if(n==0){
+            if (n == 0) {
                 picto.delete();
                 srodekPanel.removeAll();
                 this.showImages();
-                srodekPanel.revalidate(); 
+                srodekPanel.revalidate();
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
-        
-System.out.println(this.currentImageId);
-//          System.out.println( this);
-//        System.out.println(p);
-        
     }//GEN-LAST:event_menuDeleteActionPerformed
-
+    /**
+     * Press menu edit event
+     *
+     * @param evt
+     */
     private void menuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_menuEditActionPerformed
-
+    /**
+     * Press Delete event
+     *
+     * @param evt
+     */
     private void menuDeleteMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_menuDeleteMousePressed
         // TODO add your handling code here:
     }//GEN-LAST:event_menuDeleteMousePressed
-
+    /**
+     * Run window Projector
+     *
+     * @param evt
+     */
     private void projectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectorActionPerformed
-        // TODO add your handling code here:
         Projector projector = new Projector(this.page);
         projector.setVisible(true);
     }//GEN-LAST:event_projectorActionPerformed
-    public static void setIndex(Index i){
+    /**
+     * Set Index handle
+     *
+     * @param i
+     */
+    public static void setIndex(Index i) {
         index = i;
     }
-    
-    public void refresh(){
+
+    /**
+     * Refresh current window
+     */
+    public void refresh() {
         index.reLoadTree();
     }
-    
-    private void showImages(){
 
-       imagePane = new ImagePanel();
-       srodekPanel.add(new JScrollPane(imagePane));
-
-       try {
-            
+    /**
+     * Show Image on the window
+     */
+    private void showImages() {
+        imagePane = new ImagePanel();
+        srodekPanel.add(new JScrollPane(imagePane));
+        try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
-
             Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE pid="+page.id);
-            int rows =0;
-            if ( rec.last()) {
-                 rows = rec.getRow();
+            ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE pid=" + page.id);
+            int rows = 0;
+            if (rec.last()) {
+                rows = rec.getRow();
                 rec.beforeFirst();
             }
             while (rec.next()) {
-                System.out.println(rec.getString("file_name") );
-                ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\"+rec.getString("file_name"));
+                System.out.println(rec.getString("file_name"));
+                ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + rec.getString("file_name"));
                 JLabel label = new JLabel(icon);
                 label.setText(rec.getString("file_name"));
                 label.setHorizontalTextPosition(JLabel.CENTER);
@@ -314,64 +346,14 @@ System.out.println(this.currentImageId);
                     }
                 });
                 label.setComponentPopupMenu(popupImageMenu);
-                //selectedImage
                 imagePane.add(label);
                 imagePane.revalidate();
             }
             st.close();
         } catch (Exception e) {
-            
             System.out.println("Error - " + e.toString());
         }
-
-            
-//                                    try {
-//               
-//                                ImageIcon icon1 = new ImageIcon("C:\\PictoDisplayer\\pitogram.jpg");
-//                                JLabel label = new JLabel(icon1);
-//                                label.setText("testa opis");
-//                                label.setHorizontalTextPosition(JLabel.CENTER);
-//                                label.setVerticalTextPosition(JLabel.BOTTOM);
-//                                //label.setForeground(Color.WHITE);
-//                                label.setBorder(new LineBorder(Color.WHITE));
-//                                imagePane.add(label);
-//                                imagePane.revalidate();
-
-//                            } catch (Exception exp) {
-//                                exp.printStackTrace();
-//                            }  
-        /*
-         ImageIcon image = new ImageIcon("C:\\PictoDisplayer\\pitogram.jpg");
-         BufferedImage img=new ImgUtils().scaleImage(50,50,"C:\\PictoDisplayer\\pitogram.jpg");
-         image.setDescription("Dgsdfgedfg");
-
-          JLabel title = new JLabel("Obrazek 1",image, JLabel.LEFT);
-;      title.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-
-          title.setVerticalTextPosition(javax.swing.SwingConstants.BOTTOM);
-          
-          srodekPanel.add( title, "Center");
-          
-//srodekPanel.add(title, "Center");
-// srodekPanel.revalidate();
-
-          ImageIcon image2 = new ImageIcon("C:\\PictoDisplayer\\pitogram.jpg");
-          JLabel title2 = new JLabel("Obrazek 2",image2, JLabel.LEFT);
-
-          srodekPanel.add(title2, "Center");
-          
-   JLabel title3 = new JLabel("Dupdfga",image2, JLabel.LEFT);
-//   
-//         title.setIcon(image);
-         srodekPanel.add(title2, "Center");
-          srodekPanel.revalidate();
-
-     
-        srodekPanel.revalidate();
-//        index.getContentPane().add(srodekPanel);
-         */
     }
-    
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
