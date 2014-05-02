@@ -153,7 +153,6 @@ public class Page {
                 rows = rec0.getInt(1);
             }
             ResultSet rec = st.executeQuery("SELECT * FROM pages WHERE cid="+categoryID);
-            System.out.println("iiiiiiiiiiii"+ rows);
             Page pages[] = new Page[rows];
             int i = 0;
             while (rec.next()) {

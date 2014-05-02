@@ -173,7 +173,6 @@ public class Picto {
                 rows = rec0.getInt(1);
             }
             ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE pid="+pageID);
-            System.out.println("iiiiiiiiiiii"+ rows);
             Picto pictos[] = new Picto[rows];
             int i = 0;
             while (rec.next()) {
