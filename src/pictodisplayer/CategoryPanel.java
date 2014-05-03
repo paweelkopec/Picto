@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import pictodisplayer.db.Pictodb;
 import pictodisplayer.db.Category;
@@ -45,6 +46,8 @@ public class CategoryPanel extends javax.swing.JPanel {
         try {
             category = new Category(id);
             categoryDescription.setText(category.description);
+            ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + category.file_name);
+            this.categoryPicto.setIcon(icon);
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
         }
@@ -65,7 +68,9 @@ public class CategoryPanel extends javax.swing.JPanel {
         newPage = new javax.swing.JButton();
         editCategory = new javax.swing.JButton();
         usunKategorie = new javax.swing.JButton();
+        projector = new javax.swing.JButton();
         categoryDescription = new javax.swing.JLabel();
+        categoryPicto = new javax.swing.JLabel();
 
         jRadioButtonMenuItem1.setSelected(true);
         jRadioButtonMenuItem1.setText("jRadioButtonMenuItem1");
@@ -93,17 +98,25 @@ public class CategoryPanel extends javax.swing.JPanel {
             }
         });
 
+        projector.setText("Przeglądaj");
+        projector.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                projectorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(27, 27, 27)
                 .addComponent(newPage)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(editCategory)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(usunKategorie)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(projector)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -112,8 +125,9 @@ public class CategoryPanel extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(newPage)
-                    .addComponent(editCategory)
-                    .addComponent(usunKategorie))
+                    .addComponent(usunKategorie)
+                    .addComponent(projector)
+                    .addComponent(editCategory))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -124,19 +138,25 @@ public class CategoryPanel extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(categoryDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(categoryDescription, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(categoryPicto)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(categoryDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 19, Short.MAX_VALUE))
+                .addGap(24, 24, 24)
+                .addComponent(categoryDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(categoryPicto)
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         categoryDescription.getAccessibleContext().setAccessibleDescription("");
@@ -178,6 +198,11 @@ public class CategoryPanel extends javax.swing.JPanel {
         nP.setIndex(index);
         nP.setVisible(true);
     }//GEN-LAST:event_newPageActionPerformed
+
+    private void projectorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_projectorActionPerformed
+        Projector projector = new Projector(this.category.id);
+        projector.setVisible(true);
+    }//GEN-LAST:event_projectorActionPerformed
     /**
      * Set Index
      *
@@ -197,10 +222,12 @@ public class CategoryPanel extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel categoryDescription;
+    private javax.swing.JLabel categoryPicto;
     private javax.swing.JButton editCategory;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JButton newPage;
+    private javax.swing.JButton projector;
     private javax.swing.JButton usunKategorie;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,12 +1,20 @@
 package pictodisplayer;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import pictodisplayer.db.Pictodb;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import pictodisplayer.db.Category;
+import pictodisplayer.db.Picto;
 
 /**
  *
@@ -38,6 +46,9 @@ public class NewCategory extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jfileChooser = new javax.swing.JFileChooser();
+        label1 = new java.awt.Label();
+        jSeparator1 = new javax.swing.JSeparator();
         jPanel1 = new javax.swing.JPanel();
         ok = new javax.swing.JButton();
         anuluj = new javax.swing.JButton();
@@ -46,6 +57,11 @@ public class NewCategory extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         name = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        pictoOpen = new javax.swing.JButton();
+        categoryPicto = new javax.swing.JLabel();
+
+        label1.setText("label1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +92,20 @@ public class NewCategory extends javax.swing.JFrame {
 
         jLabel1.setText("Nazwa");
 
+        jLabel3.setText("Piktogram");
+
+        pictoOpen.setText("Otwórz");
+        pictoOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pictoOpenActionPerformed(evt);
+            }
+        });
+
+        categoryPicto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        categoryPicto.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        categoryPicto.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        categoryPicto.setVerticalTextPosition(javax.swing.SwingConstants.TOP);
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -85,16 +115,23 @@ public class NewCategory extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(name)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
                     .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addGap(31, 31, 31)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(343, 343, 343)
+                                .addComponent(categoryPicto)
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(pictoOpen)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(ok)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(anuluj)))
-                        .addGap(0, 10, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(18, 18, 18)
+                                .addComponent(anuluj)))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -104,15 +141,19 @@ public class NewCategory extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(name, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 184, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 14, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 158, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(ok)
-                    .addComponent(anuluj))
-                .addContainerGap())
+                    .addComponent(anuluj)
+                    .addComponent(pictoOpen)
+                    .addComponent(jLabel3))
+                .addGap(18, 18, 18)
+                .addComponent(categoryPicto)
+                .addContainerGap(225, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -142,14 +183,47 @@ public class NewCategory extends javax.swing.JFrame {
      * @param evt
      */
     private void okActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_okActionPerformed
-        if (this.name.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Wprowadź nazwę kategori.");
-            return;
+        try {
+            if (this.name.getText().equals("")) {
+                JOptionPane.showMessageDialog(this, "Wprowadź nazwę kategori.");
+                return;
+            }
+            if (this.categoryPicto.getIcon()==null) {
+                JOptionPane.showMessageDialog(this, "Wybierz obrazek.");
+                return;
+            }
+            File file = jfileChooser.getSelectedFile();
+            File dir = new File("C:\\PictoDisplayer\\");
+            dir.mkdir();
+            File dest = new File("C:\\PictoDisplayer\\" + file.getName());
+            Files.copy(file.toPath(), dest.toPath());
+            Category.add(this.name.getText(), this.description.getText(), file.getName(), 0, 0);
+            index.reLoadTree();
+            this.setVisible(false);
+        } catch (IOException ex) {
+            JOptionPane.showMessageDialog(this,
+                        ex.toString(),
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
         }
-        Category.add(this.name.getText(), this.description.getText(), 0, 0);
-        index.reLoadTree();
-        this.setVisible(false);
     }//GEN-LAST:event_okActionPerformed
+
+    private void pictoOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pictoOpenActionPerformed
+        int returnVal = jfileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            File file = jfileChooser.getSelectedFile();
+            try {
+                this.categoryPicto.removeAll();
+                this.categoryPicto.setIcon(new ImageIcon(file.getAbsolutePath()));
+                this.categoryPicto.repaint();
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this,
+                        ex.toString(),
+                        "Inane error",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_pictoOpenActionPerformed
 
     /**
      * @param args the command line arguments
@@ -188,13 +262,19 @@ public class NewCategory extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton anuluj;
+    private javax.swing.JLabel categoryPicto;
     private javax.swing.JTextArea description;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JFileChooser jfileChooser;
+    private java.awt.Label label1;
     private javax.swing.JTextField name;
     private javax.swing.JButton ok;
+    private javax.swing.JButton pictoOpen;
     // End of variables declaration//GEN-END:variables
     /**
      * Set Pictodb Object

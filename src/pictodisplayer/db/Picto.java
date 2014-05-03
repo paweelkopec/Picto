@@ -181,6 +181,5 @@ public class Picto {
             }
             return pictos;     
     }
-    
 
 }

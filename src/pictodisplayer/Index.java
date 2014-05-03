@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 import javax.swing.event.TreeSelectionEvent;
@@ -46,11 +47,19 @@ public class Index extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem1 = new javax.swing.JMenuItem();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         categoryTree = new javax.swing.JTree();
         nowaKategoria = new javax.swing.JButton();
         containerPanel = new javax.swing.JPanel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        menuFile = new javax.swing.JMenu();
+        menuEnd = new javax.swing.JMenuItem();
+        menuHelp = new javax.swing.JMenu();
+        menuAutor = new javax.swing.JMenuItem();
+
+        jMenuItem1.setText("jMenuItem1");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -85,10 +94,36 @@ public class Index extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addComponent(nowaKategoria)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 688, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 667, Short.MAX_VALUE))
         );
 
         containerPanel.setLayout(new java.awt.CardLayout());
+
+        menuFile.setText("Plik");
+
+        menuEnd.setText("Zakończ");
+        menuEnd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuEndActionPerformed(evt);
+            }
+        });
+        menuFile.add(menuEnd);
+
+        jMenuBar1.add(menuFile);
+
+        menuHelp.setText("Pomoc");
+
+        menuAutor.setText("O Programie");
+        menuAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuAutorActionPerformed(evt);
+            }
+        });
+        menuHelp.add(menuAutor);
+
+        jMenuBar1.add(menuHelp);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -162,6 +197,20 @@ public class Index extends javax.swing.JFrame {
             cl.next(containerPanel);
         }
     }//GEN-LAST:event_categoryTreeValueChanged
+    /**
+     * Press end event
+     * @param evt 
+     */
+    private void menuEndActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEndActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_menuEndActionPerformed
+    /**
+     * Press menuAutor event
+     * @param evt 
+     */
+    private void menuAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuAutorActionPerformed
+        JOptionPane.showMessageDialog(this, "Autor:  Paweł Kopeć\n Email: paweelkopec@gmail.com");
+    }//GEN-LAST:event_menuAutorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -201,8 +250,14 @@ public class Index extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTree categoryTree;
     private javax.swing.JPanel containerPanel;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JMenuItem menuAutor;
+    private javax.swing.JMenuItem menuEnd;
+    private javax.swing.JMenu menuFile;
+    private javax.swing.JMenu menuHelp;
     private javax.swing.JButton nowaKategoria;
     // End of variables declaration//GEN-END:variables
 

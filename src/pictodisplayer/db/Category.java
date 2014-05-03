@@ -1,5 +1,6 @@
 package pictodisplayer.db;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -73,7 +74,22 @@ public class Category {
             System.out.println("Error - " + e.toString());
         }
     }
-
+    /**
+     * Consturct
+     * @param rec 
+     */
+    public Category(ResultSet rec) {
+        try {
+                id = rec.getInt("id");
+                name = rec.getString("name");
+                description = rec.getString("description");
+                file_name = rec.getString("file_name");
+                sort = rec.getInt("sort");
+                stats = rec.getInt("stats");
+        } catch (Exception e) {
+            System.out.println("Error - " + e.toString());
+        }
+    }
     /**
      * Delete Category
      */
@@ -87,6 +103,8 @@ public class Category {
             for(int i = 0; i < pages.length; i++) { 
                 pages[i].delete();
             }
+            File file = new File("C:\\PictoDisplayer\\" + this.file_name);
+            file.delete();
             st.close();
         } catch (Exception e) {
             System.out.println("Error - " + e);
@@ -101,13 +119,13 @@ public class Category {
      * @param sort
      * @param stats
      */
-    public static void add(String name, String description, Integer sort, Integer stats) {
+    public static void add(String name, String description, String file_name, Integer sort, Integer stats) {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
             st.executeUpdate("INSERT INTO categories "
-                    + "(name, description, sort, stats, date) VALUES('" + name + "','" + description + "', " + sort + ", " + stats + ", CURRENT_DATE)");
+                    + "(name, description, file_name, sort, stats, date) VALUES('" + name + "','" + description + "','" + file_name + "', " + sort + ", " + stats + ", CURRENT_DATE)");
             st.close();
         } catch (Exception e) {
 
@@ -147,5 +165,20 @@ public class Category {
             System.out.println("Error - " + e.toString());
         }
     }
+    /**
+     * Search Category key
+     * @param categoryID
+     * @param categorys
+     * @return 
+     */
+    public static int searchKey(int categoryID, Category[] categorys){
+        for(int i=0; i<categorys.length; i++){
+           if(categorys[i].id==categoryID)
+               return i;
+        }
+        return 0;
+    }
+    
+
 
 }

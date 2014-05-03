@@ -280,6 +280,9 @@ public class PagePanel extends javax.swing.JPanel {
      * @param evt
      */
     private void menuEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuEditActionPerformed
+        EditPicto ep = new EditPicto(this.currentImageId);
+        ep.setPagePanel(this);
+        ep.setVisible(true);
     }//GEN-LAST:event_menuEditActionPerformed
     /**
      * Press Delete event
@@ -353,6 +356,14 @@ public class PagePanel extends javax.swing.JPanel {
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
         }
+    }
+    /**
+     * Reload Images
+     */
+    public void reloadImages() {
+        srodekPanel.removeAll();
+        this.showImages();
+        srodekPanel.revalidate();
     }
 
 

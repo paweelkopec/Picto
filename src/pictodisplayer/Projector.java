@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
+import pictodisplayer.db.Category;
 import pictodisplayer.socket.Server;
 
 /**
@@ -34,13 +35,18 @@ public class Projector extends javax.swing.JFrame {
 
     Page page;
     Picto pictos[];
-    Integer currentImage;
+    Page pages[];
+    Category categorys[];
+    Integer currentImage=0;
+    int currentCategory=0;
+    int currentPage=0;
     Timer timer;
     Timer serverTimer;
     ImagePanel imagePane;
     Server server;
     Boolean isServerActived = false;
-
+    Boolean isDispalyCategorys = false;
+    Boolean isDispalyPages = false;
     /**
      * Creates new form Projector
      */
@@ -56,24 +62,6 @@ public class Projector extends javax.swing.JFrame {
         imagePane = new ImagePanel();
         this.slectedPictos.add(new JScrollPane(imagePane));
     }
-
-    /**
-     * Run Timers
-     */
-    public void init() {
-        try {
-            ActionListener taskPerformer = new ActionListener() {
-                public void actionPerformed(ActionEvent evt) {
-                    start();
-                }
-            };
-            start();
-            timer = new Timer(2000, taskPerformer);
-            timer.start();
-        } catch (Exception e) {
-        }
-    }
-
     /**
      * Creates new form Projector
      */
@@ -90,7 +78,39 @@ public class Projector extends javax.swing.JFrame {
         imagePane = new ImagePanel();
         this.slectedPictos.add(new JScrollPane(imagePane));
     }
-
+    /**
+     * Construct from category
+     * @param categoryID
+     */
+    public Projector(int categoryID) {
+        try {
+            UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+        } catch (Exception e) {
+        }
+        this.loadCategorys();
+        initComponents();
+        imagePane = new ImagePanel();
+        this.currentCategory=Category.searchKey(categoryID, categorys);
+        this.slectedPictos.add(new JScrollPane(imagePane));
+        this.isDispalyCategorys = true;
+        init();
+    }
+    /**
+     * Run Timers
+     */
+    public void init() {
+        try {
+            ActionListener taskPerformer = new ActionListener() {
+                public void actionPerformed(ActionEvent evt) {
+                    start();
+                }
+            };
+            start();
+            timer = new Timer(2000, taskPerformer);
+            timer.start();
+        } catch (Exception e) {
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -286,18 +306,27 @@ public class Projector extends javax.swing.JFrame {
      */
     private void labelDisplayMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_labelDisplayMouseClicked
         try {
-            Integer i = this.currentImage - 1;
-            ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[i].fileName);
-            JLabel label = new JLabel(icon);
-            label.setText(this.pictos[i].fileName);
-            label.setHorizontalTextPosition(JLabel.CENTER);
-            label.setVerticalTextPosition(JLabel.BOTTOM);
-            label.setBorder(new LineBorder(Color.WHITE));
-            imagePane.add(label);
-            imagePane.revalidate();
-            this.pictos[i].increaseStats();
+            if(this.isDispalyCategorys){
+                int i = this.currentCategory>0 ?  this.currentCategory-1 : 0;
+                this.pages = Page.list(this.categorys[i].id);
+                this.loadImages(this.pages[0].id);
+                this.isDispalyCategorys = false;
+                this.isDispalyPages = true;
+                return;
+            }else{
+                int i = this.currentImage>0 ?  this.currentImage-1 : 0;
+                ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[i].fileName);
+                JLabel label = new JLabel(icon);
+                label.setText(this.pictos[i].fileName);
+                label.setHorizontalTextPosition(JLabel.CENTER);
+                label.setVerticalTextPosition(JLabel.BOTTOM);
+                label.setBorder(new LineBorder(Color.WHITE));
+                imagePane.add(label);
+                imagePane.revalidate();
+                this.pictos[i].increaseStats();
+            }
         } catch (Exception e) {
-            System.out.println("Error - " + e.toString());
+            System.out.println("Error Label display - " + e.toString());
         }
     }//GEN-LAST:event_labelDisplayMouseClicked
     /**
@@ -373,17 +402,42 @@ public class Projector extends javax.swing.JFrame {
      */
     private void start() {
         try {
-            if (this.currentImage >= this.pictos.length) {
-                this.currentImage = 0;
+            //categorys
+            if(this.isDispalyCategorys){
+                if (this.currentCategory >= this.categorys.length) {
+                    this.currentCategory = 0;
+                }
+                ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.categorys[this.currentCategory].file_name);
+                this.labelDisplay.removeAll();
+                this.labelDisplay.setIcon(icon);
+                this.labelDisplay.revalidate();
+                this.currentCategory ++;
+            // pictos    
+            }else{
+                if (this.currentImage >= this.pictos.length) {
+                    this.currentImage = 0;
+                    // next page
+                    this.currentPage++;
+                    if(this.currentPage<this.pages.length){
+                        this.loadImages(this.pages[this.currentPage].id);
+                    }
+                    
+                    if (this.currentPage >= this.pages.length) {
+                         this.currentPage = 0;
+                         this.isDispalyCategorys = true;
+                         this.isDispalyPages = false;
+                         this.currentCategory++;
+                         return;
+                    }
+                }                
+                ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[this.currentImage].fileName);
+                this.labelDisplay.removeAll();
+                this.labelDisplay.setIcon(icon);
+                this.labelDisplay.revalidate();
+                this.currentImage ++;
             }
-            ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[this.currentImage].fileName);
-            this.labelDisplay.removeAll();
-            this.labelDisplay.setIcon(icon);
-            this.labelDisplay.revalidate();
-            this.currentImage += 1;
         } catch (Exception e) {
-
-            System.out.println("Erroaar - " + e.toString());
+            System.out.println("Start - " + e.toString());
         }
     }
 
@@ -413,7 +467,7 @@ public class Projector extends javax.swing.JFrame {
      *
      * @param PageId
      */
-    private void loadImages(Integer PageId) {
+    private void loadImages(Integer PageId){
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
@@ -426,15 +480,37 @@ public class Projector extends javax.swing.JFrame {
                 rec.beforeFirst();
             }
             this.pictos = new Picto[rows];
-            Integer i = 0;
+            int i = 0;
             while (rec.next()) {
-                System.out.println(rec.getInt("stats"));
                 pictos[i] = new Picto(rec);
                 i++;
             }
             st.close();
         } catch (Exception e) {
-            System.out.println("Error - " + e.toString());
+            System.out.println("Error Load Images - " + e.toString());
+        }
+    }
+    private void loadCategorys(){
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Connection conn = DriverManager.getConnection(Pictodb.getName());
+
+            Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY stats DESC");
+            int rows = 0;
+            if (rec.last()) {
+                rows = rec.getRow();
+                rec.beforeFirst();
+            }
+            this.categorys = new Category[rows];
+            int i = 0;
+            while (rec.next()) {
+                categorys[i] = new Category(rec);
+                i++;
+            }
+            st.close();
+        } catch (Exception e) {
+            System.out.println("Error Load Category - " + e.toString());
         }
     }
 
