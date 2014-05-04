@@ -17,7 +17,6 @@ public class Server {
     Socket socket;
     PrintWriter out;
     BufferedReader in;
-    String command[] = {"showImage", "clearImages", "reset"};
     String currentCommand;
     String inputLine, outputLine;
     Protocol kkp;
@@ -57,7 +56,11 @@ public class Server {
                 System.out.println(outputLine);
                 outputLine = kkp.processInput(inputLine);
                 out.println(outputLine);
-                if (outputLine.equals("Bye.")) {
+                if (inputLine.equalsIgnoreCase("end")) {
+                    in.close();
+                    out.close();
+                    socket.close();
+                    server.close();
                 }
             }
         } catch (IOException ex) {

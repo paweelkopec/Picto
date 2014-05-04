@@ -20,6 +20,7 @@ import pictodisplayer.db.Picto;
 import pictodisplayer.db.Pictodb;
 import java.awt.event.*;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
@@ -71,12 +72,19 @@ public class Projector extends javax.swing.JFrame {
             UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
         } catch (Exception e) {
         }
+        this.loadCategorys();
+        try {
+            this.currentCategory=Category.searchKey(page.categoryId, categorys);
+            this.pages = Page.list(this.categorys[this.currentCategory].id);
+        } catch (Exception ex) {
+            Logger.getLogger(Projector.class.getName()).log(Level.SEVERE, null, ex);
+        }
         initComponents();
         this.loadImages(this.page.id);
         this.currentImage = 0;
-        init();
         imagePane = new ImagePanel();
         this.slectedPictos.add(new JScrollPane(imagePane));
+        init();
     }
     /**
      * Construct from category
@@ -244,9 +252,9 @@ public class Projector extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(port, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(serverSocket)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -254,7 +262,7 @@ public class Projector extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 662, Short.MAX_VALUE)
+                .addComponent(panelDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, 727, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -264,14 +272,14 @@ public class Projector extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(slectedPictos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(slectedPictos, javax.swing.GroupLayout.PREFERRED_SIZE, 525, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(panelDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 364, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(panelDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
 
         pack();
@@ -317,7 +325,8 @@ public class Projector extends javax.swing.JFrame {
                 int i = this.currentImage>0 ?  this.currentImage-1 : 0;
                 ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[i].fileName);
                 JLabel label = new JLabel(icon);
-                label.setText(this.pictos[i].fileName);
+                String name = this.pictos[i].name.equals("") ? this.pictos[i].fileName : this.pictos[i].name;                
+                label.setText(name);
                 label.setHorizontalTextPosition(JLabel.CENTER);
                 label.setVerticalTextPosition(JLabel.BOTTOM);
                 label.setBorder(new LineBorder(Color.WHITE));
@@ -409,6 +418,10 @@ public class Projector extends javax.swing.JFrame {
                 }
                 ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.categorys[this.currentCategory].file_name);
                 this.labelDisplay.removeAll();
+                String name = this.categorys[this.currentCategory].name;
+                this.labelDisplay.setText(name);
+                this.labelDisplay.setHorizontalTextPosition(JLabel.CENTER);
+                this.labelDisplay.setVerticalTextPosition(JLabel.BOTTOM);
                 this.labelDisplay.setIcon(icon);
                 this.labelDisplay.revalidate();
                 this.currentCategory ++;
@@ -421,7 +434,6 @@ public class Projector extends javax.swing.JFrame {
                     if(this.currentPage<this.pages.length){
                         this.loadImages(this.pages[this.currentPage].id);
                     }
-                    
                     if (this.currentPage >= this.pages.length) {
                          this.currentPage = 0;
                          this.isDispalyCategorys = true;
@@ -431,8 +443,12 @@ public class Projector extends javax.swing.JFrame {
                     }
                 }                
                 ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[this.currentImage].fileName);
+                String name = this.pictos[this.currentImage].name.equals("") ? this.pictos[this.currentImage].fileName : this.pictos[this.currentImage].name;
                 this.labelDisplay.removeAll();
                 this.labelDisplay.setIcon(icon);
+                this.labelDisplay.setText(name);
+                this.labelDisplay.setHorizontalTextPosition(JLabel.CENTER);
+                this.labelDisplay.setVerticalTextPosition(JLabel.BOTTOM);
                 this.labelDisplay.revalidate();
                 this.currentImage ++;
             }
@@ -459,6 +475,17 @@ public class Projector extends javax.swing.JFrame {
                     false);
             this.labelDisplayMouseClicked(evt);
 
+        }else if(cmd.equalsIgnoreCase("reset")){
+            java.awt.event.ActionEvent evt = new ActionEvent(this,78898, "");
+            this.resetActionPerformed(evt);
+        }else if(cmd.equalsIgnoreCase("pause")){
+            java.awt.event.ActionEvent evt = new ActionEvent(this,782434898, "");
+            this.pauze.setSelected(true);
+            this.pauzeActionPerformed(evt);
+        }else if(cmd.equalsIgnoreCase("start")){
+            java.awt.event.ActionEvent evt = new ActionEvent(this,782234898, "");
+            this.pauze.setSelected(false);
+            this.pauzeActionPerformed(evt);
         }
     }
 

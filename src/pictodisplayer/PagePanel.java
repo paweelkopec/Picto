@@ -337,7 +337,8 @@ public class PagePanel extends javax.swing.JPanel {
                 System.out.println(rec.getString("file_name"));
                 ImageIcon icon = new ImageIcon("C:\\PictoDisplayer\\" + rec.getString("file_name"));
                 JLabel label = new JLabel(icon);
-                label.setText(rec.getString("file_name"));
+                String name = rec.getString("name").equals("") ? rec.getString("file_name") : rec.getString("name");
+                label.setText(name);
                 label.setHorizontalTextPosition(JLabel.CENTER);
                 label.setVerticalTextPosition(JLabel.BOTTOM);
                 label.setBorder(new LineBorder(Color.WHITE));

@@ -14,7 +14,7 @@ public class Protocol {
     private static final int ANOTHER = 4;
     private int state = START;
 
-    private String command[] = {"", "show", "clearImages", "reset"};
+    private String command[] = {"", "show", "reset", "pause", "start", "end"};
     private String request = "";
 
     /**
@@ -33,13 +33,19 @@ public class Protocol {
             state = WAITING;
         } else if (state == WAITING) {
             if (theInput.equalsIgnoreCase("show")) {
-                theOutput = "showImage: OK";
-                request = theInput;
-            } else if (theInput.equalsIgnoreCase("clearImages")) {
-                theOutput = "clearImages: OK";
+                theOutput = "show: OK";
                 request = theInput;
             } else if (theInput.equalsIgnoreCase("reset")) {
-                theOutput = "creset: OK";
+                theOutput = "reset: OK";
+                request = theInput;
+            } else if (theInput.equalsIgnoreCase("pause")) {
+                theOutput = "pause: OK";
+                request = theInput;
+            } else if (theInput.equalsIgnoreCase("start")) {
+                theOutput = "start: OK";
+                request = theInput;
+            }else if (theInput.equalsIgnoreCase("end")) {
+                theOutput = "end: close connection";
                 request = theInput;
             } else {
                 theOutput = "Niepoprawna Komenda '" + theInput + "'";
