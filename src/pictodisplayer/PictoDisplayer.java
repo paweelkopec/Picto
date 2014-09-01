@@ -9,6 +9,7 @@ import pictodisplayer.db.Pictodb;
 /**
  *
  * @author Pawel Kopec <paweelkopec@gmail.com>
+ * @version 1.0.1
  */
 public class PictoDisplayer {
 
