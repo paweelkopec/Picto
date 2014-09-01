@@ -364,7 +364,7 @@ public class Projector extends javax.swing.JFrame {
                     getServerCommand();
                 }
             };
-            this.serverTimer = new Timer(100, taskPerformer2);
+            this.serverTimer = new Timer(50, taskPerformer2);
             serverTimer.start();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage());

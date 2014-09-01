@@ -157,7 +157,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel3">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Liczba wy&#x15b;wietle&#x144;"/>
+            <Property name="text" type="java.lang.String" value="Kolejno&#x15b;&#x107; w sortowaniu"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JTextField" name="sort">

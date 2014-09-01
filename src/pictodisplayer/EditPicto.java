@@ -73,7 +73,7 @@ public class EditPicto extends javax.swing.JFrame {
 
         jLabel1.setText("Nazwa");
 
-        jLabel3.setText("Liczba wyświetleń");
+        jLabel3.setText("Kolejność wyświetlania");
 
         sort.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 

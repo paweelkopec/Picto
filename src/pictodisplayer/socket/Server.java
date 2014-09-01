@@ -82,7 +82,6 @@ public class Server {
      */
     public void close() {
         try {
-            System.out.print("finally");
             out.close();
             socket.close();
             server.close();

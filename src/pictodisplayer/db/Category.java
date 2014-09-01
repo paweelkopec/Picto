@@ -80,12 +80,12 @@ public class Category {
      */
     public Category(ResultSet rec) {
         try {
-                id = rec.getInt("id");
-                name = rec.getString("name");
-                description = rec.getString("description");
-                file_name = rec.getString("file_name");
-                sort = rec.getInt("sort");
-                stats = rec.getInt("stats");
+                this.id = rec.getInt("id");
+                this.name = rec.getString("name");
+                this.description = rec.getString("description");
+                this.file_name = rec.getString("file_name");
+                this.sort = rec.getInt("sort");
+                this.stats = rec.getInt("stats");
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
         }

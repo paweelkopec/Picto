@@ -82,7 +82,7 @@ public class EditCategory extends javax.swing.JFrame {
 
         jLabel1.setText("Nazwa");
 
-        jLabel3.setText("Liczba wyświetleń");
+        jLabel3.setText("Kolejność w sortowaniu");
 
         sort.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
 
