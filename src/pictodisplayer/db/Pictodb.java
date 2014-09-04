@@ -68,8 +68,17 @@ public class Pictodb {
                                   "stats INTEGER default 0," +
                                   "date date)");
             }
+            rs = dbmd.getTables(null, "APP", "SETTING", null);
+            if (!rs.next()) {
+                st.executeUpdate("CREATE TABLE setting (" +
+                                  "id INTEGER NOT NULL PRIMARY KEY GENERATED ALWAYS AS identity (START WITH 1, INCREMENT BY 1)," +
+                                  "name VARCHAR(240)," +
+                                  "value VARCHAR(240))");
+            }
+            
             st.close();
         } catch (Exception e) {
+            System.out.println("Tworzenie tabeli");
              System.out.println(e.toString());
         }
     }

@@ -20,6 +20,7 @@ import javax.swing.border.LineBorder;
 import pictodisplayer.db.Pictodb;
 import pictodisplayer.db.Category;
 import pictodisplayer.db.Page;
+import pictodisplayer.db.Setting;
 import pictodisplayer.PictoFilter;
 import pictodisplayer.db.Picto;
 import pictodisplayer.ImagePanel;
@@ -216,10 +217,18 @@ public class PagePanel extends javax.swing.JPanel {
      * @param evt
      */
     private void addPictoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPictoActionPerformed
+        Setting defaultDir = new Setting("defaultDir");
+        if(defaultDir.value != null){
+            File dir2 = new File(defaultDir.value);
+            fileChooser.setCurrentDirectory(dir2);
+        }
+
         int returnVal = fileChooser.showOpenDialog(this);
+        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try {
+                defaultDir.setValue(file.getParent()+"\\");                  
                 File dir = new File("C:\\PictoDisplayer\\");
                 dir.mkdir();
                 File dest = new File("C:\\PictoDisplayer\\" + file.getName());
