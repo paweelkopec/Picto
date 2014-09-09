@@ -31,6 +31,7 @@ import pictodisplayer.socket.Server;
  * Image Projector
  *
  * @author Pawel Kopec <paweelkopec@gmail.com>
+ * @version 1.0.1
  */
 public class Projector extends javax.swing.JFrame {
 
@@ -492,7 +493,6 @@ public class Projector extends javax.swing.JFrame {
                          this.currentPage = 0;
                          this.isDispalyCategorys = true;
                          this.isDispalyPages = false;
-                         
                          this.start();
                          return;
                     }
@@ -501,9 +501,7 @@ public class Projector extends javax.swing.JFrame {
                     this.currentImage = 0;
                     this.currentPage++;
                 }
-                     
-                   
-                              
+                         
                 this.currentIco = new ImageIcon("C:\\PictoDisplayer\\" + this.pictos[this.currentImage].fileName);
                 this.currntName = this.pictos[this.currentImage].name.equals("") ? this.pictos[this.currentImage].fileName : this.pictos[this.currentImage].name;
                 this.labelDisplay.removeAll();
