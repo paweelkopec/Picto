@@ -24,7 +24,7 @@ public class Setting {
      * @param name 
      */
     public Setting(String name) {
-        //this.name = name;
+        this.name = name;
         try {
             try {
                 Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -37,12 +37,12 @@ public class Setting {
                     this.name = rec.getString("name");
                     value = rec.getString("value");
                 }else{
-                    this.add(name, "");
+                    this.add(name, "null");
                 }
                 st.close();
                 
             }catch (SQLException e) {
-                this.add(name, "");
+                this.add(name, "null");
             }
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
@@ -95,14 +95,10 @@ public class Setting {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             
-            String commandString = "UPDATE setting  SET value=? WHERE name=?";
-            PreparedStatement st = conn.prepareStatement(commandString);
-            
-            String nameReplace = this.value.replaceAll("\"", "\\\"");
-            st.setString(1,   nameReplace); 
-            st.setString(2, this.name);  
-            st.execute();
-            conn.commit();
+            Statement st = conn.createStatement();
+            //this.value = this.value.replaceAll("\"", "\\\"");
+            st.executeUpdate("UPDATE setting  SET "
+                    + "value='" + this.value + "' WHERE name='"+this.name+ "'");
             st.close();
         } catch (Exception e) {
             System.out.println("Error update - " + e.toString());
