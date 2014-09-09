@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import pictodisplayer.db.Category;
 import pictodisplayer.db.Picto;
+import pictodisplayer.db.Setting;
 
 /**
  *
@@ -62,8 +63,6 @@ public class NewCategory extends javax.swing.JFrame {
         categoryPicto = new javax.swing.JLabel();
 
         label1.setText("label1");
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nowa Kategoria"));
 
@@ -209,9 +208,15 @@ public class NewCategory extends javax.swing.JFrame {
     }//GEN-LAST:event_okActionPerformed
 
     private void pictoOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pictoOpenActionPerformed
+        Setting defaultCategoryDir = new Setting("defaultCategoryDir");
+        if(defaultCategoryDir.value != null){
+            File dir2 = new File(defaultCategoryDir.value);
+            jfileChooser.setCurrentDirectory(dir2);
+        }
         int returnVal = jfileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = jfileChooser.getSelectedFile();
+            defaultCategoryDir.setValue(file.getParent()+"\\");    
             try {
                 this.categoryPicto.removeAll();
                 this.categoryPicto.setIcon(new ImageIcon(file.getAbsolutePath()));

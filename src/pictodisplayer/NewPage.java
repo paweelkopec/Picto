@@ -47,8 +47,6 @@ public class NewPage extends javax.swing.JFrame {
         name = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Nowa Strona"));
 
         ok.setText("OK");

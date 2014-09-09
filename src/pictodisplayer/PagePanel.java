@@ -217,6 +217,8 @@ public class PagePanel extends javax.swing.JPanel {
      * @param evt
      */
     private void addPictoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPictoActionPerformed
+        
+        
         Setting defaultDir = new Setting("defaultDir");
         if(defaultDir.value != null){
             File dir2 = new File(defaultDir.value);
@@ -375,7 +377,9 @@ public class PagePanel extends javax.swing.JPanel {
         this.showImages();
         srodekPanel.revalidate();
     }
-
+    private void setupListeners(){
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addPicto;

@@ -53,8 +53,6 @@ public class EditCategory extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         sort = new javax.swing.JTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Edycja Kategorii"));
 
         ok.setText("OK");

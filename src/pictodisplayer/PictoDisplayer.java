@@ -20,7 +20,7 @@ public class PictoDisplayer {
         try{
             Pictodb  db = new Pictodb("db_picto");
             db.createDatabase();
-            new Index().setVisible(true);
+            new Projector().setVisible(true);
         }catch (Exception e) {
            Index index = new Index();
            index.setVisible(true);

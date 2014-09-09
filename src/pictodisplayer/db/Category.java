@@ -165,6 +165,23 @@ public class Category {
             System.out.println("Error - " + e.toString());
         }
     }
+    public static Category getMostPopularCategory(){
+        try {
+            Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
+            Connection conn = DriverManager.getConnection(Pictodb.getName());
+            Statement st = conn.createStatement();
+            ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY stats DESC");
+            if(rec.next()){
+                Category  cat = new Category(rec);
+                return cat;
+            }
+            st.close();
+
+        } catch (Exception e) {
+            System.out.println("Error - " + e.toString());
+        }
+        return null;
+    }
     /**
      * Search Category key
      * @param categoryID
