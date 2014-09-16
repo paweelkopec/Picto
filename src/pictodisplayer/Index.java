@@ -271,7 +271,7 @@ public class Index extends javax.swing.JFrame {
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
             Statement st2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY  name ASC");
+            ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY sort, name ASC");
             int rows = 0;
             if (rec.last()) {
                 rows = rec.getRow();

@@ -336,7 +336,7 @@ public class PagePanel extends javax.swing.JPanel {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-            ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE pid=" + page.id);
+            ResultSet rec = st.executeQuery("SELECT * FROM pictos WHERE pid=" + page.id + " ORDER BY sort, name ASC");
             int rows = 0;
             if (rec.last()) {
                 rows = rec.getRow();
