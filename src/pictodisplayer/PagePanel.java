@@ -220,14 +220,11 @@ public class PagePanel extends javax.swing.JPanel {
         
         
         Setting defaultDir = new Setting("defaultDir");
-    System.out.println("Error - " + defaultDir.value);
         if(defaultDir.value != null){
             File dir2 = new File(defaultDir.value);
             fileChooser.setCurrentDirectory(dir2);
         }
-
         int returnVal = fileChooser.showOpenDialog(this);
-        
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             File file = fileChooser.getSelectedFile();
             try {

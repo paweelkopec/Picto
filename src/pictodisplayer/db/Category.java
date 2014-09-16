@@ -152,18 +152,32 @@ public class Category {
     /**
      * Load all Categories
      */
-    public static void all() {
+    public static Category[] all() {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             Connection conn = DriverManager.getConnection(Pictodb.getName());
             Statement st = conn.createStatement();
+            Statement st2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            ResultSet rec2 = st2.executeQuery("SELECT id FROM categories");
+            int rows = 0;
+            if (rec2.last()) {
+                rows = rec2.getRow();
+                rec2.beforeFirst();
+            }
+            st2.close();
+            Category[] categorys = new Category[rows];
             ResultSet rec = st.executeQuery("SELECT * FROM categories ORDER BY name");
+            int i=0;
             while (rec.next()) {
+                categorys[i] = new  Category(rec);
+                i++;
             }
             st.close();
+            return categorys;
         } catch (Exception e) {
             System.out.println("Error - " + e.toString());
         }
+        return null;
     }
     public static Category getMostPopularCategory(){
         try {
