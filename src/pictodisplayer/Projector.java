@@ -449,7 +449,7 @@ public class Projector extends javax.swing.JFrame {
             this.serverTimer = new Timer(50, taskPerformer2);
             serverTimer.start();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "ERROR: " + ex.getMessage());
+            JOptionPane.showMessageDialog(this, "Socket error: " + ex.getMessage());
         }
     }//GEN-LAST:event_serverSocketActionPerformed
 

@@ -195,7 +195,9 @@ public class NewCategory extends javax.swing.JFrame {
             File dir = new File("C:\\PictoDisplayer\\");
             dir.mkdir();
             File dest = new File("C:\\PictoDisplayer\\" + file.getName());
-            Files.copy(file.toPath(), dest.toPath());
+            if (!dest.exists()) {
+                Files.copy(file.toPath(), dest.toPath());
+            }
             Category.add(this.name.getText(), this.description.getText(), file.getName(), 0, 0);
             index.reLoadTree();
             this.setVisible(false);

@@ -27,10 +27,10 @@ public class Server {
      *
      * @param port
      */
-    public Server(int port) {
-        this.port = port;
-        try {
+    public Server(int port) throws IOException {
+            this.port = port;
             server = new ServerSocket(port);
+            server.setSoTimeout(10000); //10 s timeout
             socket = server.accept();
             out = new PrintWriter(socket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -39,9 +39,6 @@ public class Server {
             outputLine = kkp.processInput(null);
             out.println(outputLine);
             System.out.println(outputLine);
-        } catch (IOException ex) {
-            Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
     /**

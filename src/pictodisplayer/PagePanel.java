@@ -232,7 +232,9 @@ public class PagePanel extends javax.swing.JPanel {
                 File dir = new File("C:\\PictoDisplayer\\");
                 dir.mkdir();
                 File dest = new File("C:\\PictoDisplayer\\" + file.getName());
-                Files.copy(file.toPath(), dest.toPath());
+                if (!dest.exists()) {
+                    Files.copy(file.toPath(), dest.toPath());
+                }
                 Picto.add(page.id, "", file.getName(), 0, 0);
                 srodekPanel.removeAll();
                 this.showImages();
